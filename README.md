@@ -16,6 +16,7 @@
 * [bootstrap-select](http://silviomoreto.github.io/bootstrap-select/ "bootstrap-select")
 * [BootstrapValidator](http://bv.doc.javake.cn/validators/ "BootstrapValidator")
 * [Font Awesome v4.6.3](http://fontawesome.io/icons/ "Font Awesome v4.6.3")
+* [UMEditor](http://ueditor.baidu.com/website/umeditor.html "UMEditor")
 
 ##框架组件
 
