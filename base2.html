@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>一华药业</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <!-- ------------------being Header---------------------->
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="common/lib/bootstrap/bootstrap/css/bootstrap.min.css">
+    <!-- font-awesome字体 -->
+    <link rel="stylesheet" href="common/lib/font-awesome/css/font-awesome.min.css">
+    <!--select下拉框美化-->
+    <link rel="stylesheet" href="common/lib/bootstrap/select/bootstrap-select.min.css">
+    <!--jQuery tablesorter-->
+    <link rel="stylesheet" href="common/lib/jquery/tablesorter/style.css">
+    <!--bootstrap表单验证-->
+    <link rel="stylesheet" href="common/lib/bootstrap/validate/bootstrapValidator.min.css">
+    <!-- 自定义样式-->
+    <link rel="stylesheet" href="common/css/admin.css">
+    <link rel="stylesheet" href="common/css/menu.css">
+    <!--[if lt IE 9]>
+    <script src="common/lib/html5shiv.min.js"></script>
+    <script src="common/lib/respond.min.js"></script>
+    <![endif]-->
+    <!-- ------------------ end Header ---------------------->
+    <script>
+        //重置当前页面---可选
+        CURRENTURL = window.location.href;
+    </script>
+</head>
+<body ondrag="return false" ondragstart="return false;">
+<!-- ConfirmModal begin -->
+<div class="modal fade" id="ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="ConfirmModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnClose">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </button>
+                <h4 class="modal-title" id="ConfirmModalLabel">提示</h4>
+            </div>
+            <div class="modal-body text-center font20"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnCancel">取消</button>
+                <button type="button" class="btn btn-success" id="btnConfirm">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ConfirmModal end -->
+<!-- FromModal begin -->
+<div class="modal fade" id="HandleFormModal" tabindex="-1" role="dialog" aria-labelledby="HandleFormModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseHandleForm">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </button>
+                <h4 class="modal-title" id="HandleFormModalLabel">弹出框</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="HandleForm" name="HandleForm" action="" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">品种名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">产地:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-sm-12">
+                            <input type='hidden' name='id' id='id' value='' />
+                            <input type='hidden' name='_method_' id='_method_' value='add' />
+                            <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FromModal end -->
+<div class="container-fluid clearfix hdc_header">
+    <div class="container nopadding center-block clearfix">
+        <div class="pull-left">
+            <a href="" class="logo"></a>
+        </div>
+        <div class="pull-right">
+            <a href=""><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，管理员</span></a>
+            <a class="hidden-xs" href=""><i class="fa fa-home"></i>回到首页</a>
+            <a href=""><i class="fa fa-power-off"></i>退出</a>
+            <a class="visible-xs-inline" href="javascript:" id="toggleLeftNav"><i class="fa fa-list"></i>功能菜单</a>
+        </div>
+    </div>
+</div>
+<div class="container border1 nopadding bgfff clearfix">
+    <!-- LeftNav-->
+    <div class="col-md-2 nopadding hidden-xs" id="leftNav">
+        <a class="hidden-xs thumbnail noborder nomargin mt25" href="">
+            <img src="common/image/default-user.jpg" class="img-thumbnail" style="width:70%" alt="管理员">
+            <div class="caption text-center">
+                <p>欢迎您，管理员</p>
+            </div>
+        </a>
+        <div class="menu_box" id="menuBar">
+            <dl class="menu_list">
+                <dt class="menu_title">
+                    <a href="index.html"><i class="fa fa-magic"></i>首页</a>
+                </dt>
+            </dl>
+            <dl class="menu_list">
+                <dt class="menu_title"><i class="fa fa-list"></i>功能列表</dt>
+                <dd class="menu_item"><a href="base.html">基础实例</a></dd>
+                <dd class="menu_item selected"><a href="base2.html">基础实例2</a></dd>
+                <dd class="menu_item"><a href="form.html">表单控件</a></dd>
+                <dd class="menu_item"><a href="document.html">使用文档</a></dd>
+            </dl>
+        </div>
+    </div>
+    <!-- RightContent -->
+    <div class="col-xs-12 col-md-10 nopadding border1l" id="rightContent" style="margin-left:-1px;min-height:600px;">
+        <div class="container-fluid mt10">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 p25">
+                    <div class="page-header clearfix">
+                        <h3 class="pull-left nomargin">
+                            <i class='fa fa-gear'></i>基础实例2：无搜索
+                        </h3>
+                        <button type="button" class="pull-right btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false">添加菜单</button>
+                    </div>
+                    <div class="panel panel-default">
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-advanced tablesorter tb-sticky-header">
+                                <thead>
+                                <tr>
+                                    <th class="hidden-xs" width="40">#</th>
+                                    <th>品种名称</th>
+                                    <th class="hidden-xs">产地</th>
+                                    <th width="150">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">1</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">3</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="hidden-xs">2</td>
+                                        <td>党参</td>
+                                        <td class="hidden-xs">甘肃兰州</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-obj="" data-whatever="@edit" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                            <button class="btn btn-danger DelBtn" data-info="您确定要删除嘛?" data-objurl="">删除</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ------------------being Footer------------------- -->
+<div class="foot text-center">
+    <p>版权所有©西北师范大学　邮编：730070　技术支持：教学科研网络中心　地址：兰州市安宁东路967号　电话查号台：0931-7971114</p>
+</div>
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="common/lib/jquery/jquery.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="common/lib/bootstrap/bootstrap/js/bootstrap.min.js"></script>
+<!--表单验证-->
+<script src="common/lib/bootstrap/validate/bootstrapValidator.min.js"></script>
+<script src="common/lib/bootstrap/validate/zh_CN.js"></script>
+<!--表格排序-->
+<script src="common/lib/jquery/tablesorter/jquery.tablesorter.min.js"></script>
+<!--select下拉框美化-->
+<script src="common/lib/bootstrap/select/bootstrap-select.min.js"></script>
+<script src="common/lib/bootstrap/select/bootstrap-select-zh_CN.min.js"></script>
+<!-- 自定义JS-->
+<script src="common/js/admin.js"></script>
+<!-- ------------------end Footer------------------- -->
+<script>
+    $('#HandleFormModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var action = button.data('action');
+        var modal = $(this);
+        if(action == 'add') {
+            modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
+            $('#_method_').val(action);
+        } else if(action == 'edit') {
+            modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
+            $('#_method_').val(action);
+        }
+    })
+
+    $(document).ready(function() {
+        $('#btnCancelHandleForm').bind('click', function() {
+            $('#group_client_id_value').val();
+            $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+        })
+        $('#btnCloseHandleForm').bind('click', function() {
+            $('#group_client_id_value').val();
+            $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+        })
+        $('#HandleForm').bootstrapValidator({
+            message: '您输入的信息有误，请仔细检查！',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                'name': {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写名称'
+                        }
+                    }
+                },
+                'address': {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写产地'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);    //获取表单实例
+            var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+            //对modal处理
+            $('#HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
+            $('#HandleFormModal').modal('hide');   //隐藏HandleFormModal
+            confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+            //ajax处理
+            ajaxDo($form.attr('action'), $form.serialize(), "POST");
+            if(ajaxReturnData.status == '200') {
+                confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                setTimeout(function() {
+                    window.location.replace(window.location.href);
+                }, 1000);
+            } else {
+                confirmModalInfo(ajaxReturnData.info, '');
+                setTimeout(function() {
+                    confirmModalClose();
+                    $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+                    $('#HandleFormModal').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });   //显示HandleFormModal，保持原样
+                }, 1000);
+            }
+        });;
+    });
+</script>
+</body>
+</html>
