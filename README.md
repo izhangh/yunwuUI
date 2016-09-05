@@ -1,5 +1,9 @@
 #云雾UI
 
+##项目托管
+
+* [Github代码托管](https://github.com/izhangh/yunwuUI "Github代码托管")
+
 ##兼容性
 
 * IE8.0+, Chrome, Firefox, Safari。
@@ -16,7 +20,6 @@
 * [bootstrap-select](http://silviomoreto.github.io/bootstrap-select/ "bootstrap-select")
 * [BootstrapValidator](http://bv.doc.javake.cn/validators/ "BootstrapValidator")
 * [Font Awesome v4.6.3](http://fontawesome.io/icons/ "Font Awesome v4.6.3")
-* [UMEditor](http://ueditor.baidu.com/website/umeditor.html "UMEditor")
 
 ##框架组件
 
@@ -175,8 +178,255 @@ JS代码直接调用
 	</table>
 </div>
 ```
+
+###表单控件
+
+```html
+<form class="form-horizontal" id="HandleForm" name="HandleForm" action="" method="post">
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">上传照片:</label>
+		<div class="col-sm-6">
+			<span class="btn btn-info fileinput-button">
+				<i class="glyphicon glyphicon-plus"></i>
+				<span>选择文件</span>
+				<input id="fileupload" type="file" name="fileupload">
+				<input type="hidden" name="pic" id="pic" value="">
+			</span>
+			<p style="display: inline-block;">只支持jpg、jpeg、png格式，大小不能超过100KB</p>
+			<div id="progress" class="progress nomargin">
+				<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+			</div>
+			<div class="alert alert-danger nomargin" id="pic_tip_info" style="display:none;" role="alert"></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">输入框:</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="" data-bv-field="" value="" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">下拉框:</label>
+		<div class="col-sm-6">
+			<select name="" data-bv-field="" class="form-control selectpicker" data-live-search="true">
+				<option value="" selected>汉族</option>
+				<option value="" selected>苗族</option>
+				<option value="" selected>藏族</option>
+				<option value="" selected>维吾尔族族</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">多选框:</label>
+		<div class="col-sm-6">
+			<label class="checkbox-inline">
+				<input type="checkbox" name="" value=""> 选项一
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" name="" value=""> 选项二
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">单选框1:</label>
+		<div class="col-sm-6">
+			<label class="radio-inline">
+				<input type="radio" name="" value=""> 男
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="" value=""> 女
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">单选框2:</label>
+		<div class="col-sm-2">
+			<div class="checkbox">
+				<label class="nopadding">
+					<input type="radio" name="img" value="default-user.jpg"> 默认头像
+				</label>
+				<img src="common/image/default-user.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div class="checkbox">
+				<label class="nopadding">
+					<input type="radio" name="img" value="default-male.jpg"> 我是帅哥
+				</label>
+				<img src="common/image/default-male.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div class="checkbox">
+				<label class="nopadding">
+					<input type="radio" name="img" value="default-female.jpg"> 我是美女
+				</label>
+				<img src="common/image/default-female.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">文本域:</label>
+		<div class="col-sm-6">
+			<textarea class="form-control" name="" style="resize:vertical;" data-bv-field=""></textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 col-md-offset-1 control-label">富文本编辑器:</label>
+		<div class="col-sm-9">
+			<textarea id="content" name="content" data-bv-field="content" style="width:100%;height:300px;"></textarea>
+		</div>
+	</div>
+	<div class="form-group text-center">
+		<div class="col-sm-8">
+			<button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">确认</button>
+		</div>
+	</div>
+</form>
+```
+
+###上传插件
+```html
+<!--文件上传插件-->
+<script src="common/lib/jquery/fileupload/jquery.ui.widget.js"></script>
+<script src="common/lib/jquery/fileupload/jquery.iframe-transport.js"></script>
+<script src="common/lib/jquery/fileupload/jquery.fileupload.js"></script>
+```
+
+```html
+<span class="btn btn-info fileinput-button">
+	<i class="glyphicon glyphicon-plus"></i>
+	<span>选择文件</span>
+	<input id="fileupload" type="file" name="fileupload">
+	<input type="hidden" name="pic" id="pic" value="">
+</span>
+<p style="display: inline-block;">只支持jpg、jpeg、png格式，大小不能超过100KB</p>
+<div id="progress" class="progress nomargin">
+	<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+</div>
+<div class="alert alert-danger nomargin" id="pic_tip_info" style="display:none;" role="alert"></div>
+```
+
+```javascript
+$(document).ready(function() {
+	/**
+	 * ajax返回参数 data图片地址 info提示信息 status状态 200成功 其他失败
+	 */
+	$('#fileupload').fileupload({
+		url: "",	//异步上传调用地址
+		dataType: 'json',
+		autoUpload: true,
+		done: function (e, data) {
+			$('#pic_tip_info').html(data.result.info).show();
+			if(data.result.status == '200') {
+				var path = data.result.data;
+				$('#pic').val(path);
+				$('#pic_img').attr('src', '' + path);
+				$('#pic_div').show();
+				$('#fileupload').fileupload('disable');
+			} else {
+				$('#fileupload').fileupload('enable');
+				$('#fileupload').removeAttr('disabled');
+			}
+		},
+		progressall: function (e, data) {
+			var progress = parseInt(data.loaded / data.total * 100, 10);
+			$('#progress .progress-bar').css('width', progress + '%');
+		}
+	}).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+})
+```
+
+###下拉框插件
+
+参数请参照[bootstrap-select](http://silviomoreto.github.io/bootstrap-select/examples/ "bootstrap-select")
+
+```html
+<!--select下拉框美化-->
+<link rel="stylesheet" href="common/lib/bootstrap/select/bootstrap-select.min.css">
+<script src="common/lib/bootstrap/select/bootstrap-select.min.js"></script>
+<script src="common/lib/bootstrap/select/bootstrap-select-zh_CN.min.js"></script>
+```
+
+```html
+<select name="" data-bv-field="" class="form-control selectpicker" data-live-search="true">
+	<option value="" selected>汉族</option>
+	<option value="" selected>苗族</option>
+	<option value="" selected>藏族</option>
+	<option value="" selected>维吾尔族族</option>
+</select>
+```
+
+###富文本编辑器 UMEditor
+
+```html
+<link href="common/lib/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+
+<script type="text/javascript" src="common/lib/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" src="common/lib/umeditor/umeditor.js"></script>
+<script type="text/javascript" src="common/lib/umeditor/lang/zh-cn/zh-cn.js"></script>
+```
+
+```html
+<textarea id="content" name="content" data-bv-field="content" style="width:100%;height:300px;"></textarea>
+```
+
+```javascript
+$(document).ready(function() {
+    UM.getEditor('content');
+})
+```
+
+###表单验证
+参数请参照[BootstrapValidator](http://bv.doc.javake.cn/validators/ "BootstrapValidator")
+```html
+<script src="common/lib/bootstrap/validate/bootstrapValidator.min.js"></script>
+<script src="common/lib/bootstrap/validate/zh_CN.js"></script>
+```
+
+```html
+<input type="text" class="form-control" name="test" data-bv-field="test" value="test" />
+```
+
+```javascript
+$('#HandleForm').bootstrapValidator({
+	message: '您输入的信息有误，请仔细检查！',
+	feedbackIcons: {
+		valid: 'glyphicon glyphicon-ok',
+		invalid: 'glyphicon glyphicon-remove',
+		validating: 'glyphicon glyphicon-refresh'
+	},
+	fields: {
+		test: {
+			validators: {
+				notEmpty: {
+					message: '名字不能为空'
+				}
+			}
+		}
+	}
+}).on('success.form.bv', function(e) {
+	e.preventDefault();
+	var $form = $(e.target);    //获取表单实例
+	var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+	//提示信息
+	confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');
+	//ajax处理
+	ajaxDo($form.attr('action'), $form.serialize(), "POST");
+	if(ajaxReturnData.status == '200') {
+		confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+		setTimeout(function() {
+			window.location.replace(window.location.href);
+		}, 1000);
+	} else if(ajaxReturnData.status == '300') {
+		confirmModalInfo(ajaxReturnData.info, '');
+		setTimeout(function() {
+			confirmModalClose();
+		}, 1000);
+	}
+});
+```
  
 ## 友好的开源协议
 
 云雾UI遵循Apache2开源协议发布。Apache Licence是著名的非盈利开源组织Apache采用的协议，该协议和BSD类似，鼓励代码共享和尊重原作者的著作权，同样允许代码修改，再作为开源或商业软件发布。
-
