@@ -179,11 +179,17 @@
 
 	$(document).on('click.' + pluginName, '[data-trigger="HandleFormModal"]', function() {
 		$(this)[pluginName]();
+        if($('#tipDiv').length == 1) {
+            $('#tipDiv').hide();
+        }
 		if ($(this).is('a')) {
 			return false;
 		}
 	}).on('click.' + pluginName, '[data-dismiss="HandleFormModal"]', function(e) {
 		e.preventDefault();
+        if($('#tipDiv').length == 1) {
+            $('#tipDiv').hide();
+        }
 		$(this).closest('.modal').trigger('close');
 	});
 })(jQuery);

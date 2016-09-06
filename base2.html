@@ -289,11 +289,11 @@
 
     $(document).ready(function() {
         $('#btnCancelHandleForm').bind('click', function() {
-            $('#group_client_id_value').val();
+            $('#tipDiv').hide();
             $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
         })
         $('#btnCloseHandleForm').bind('click', function() {
-            $('#group_client_id_value').val();
+            $('#tipDiv').hide();
             $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
         })
         $('#HandleForm').bootstrapValidator({

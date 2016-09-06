@@ -125,6 +125,11 @@ JS代码直接调用
                             <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger nomargin text-center" id="tipDiv" style="display:none;" role="alert"></div>
+                        </div>
+                    </div>
                     <div class="form-group text-center">
                         <div class="col-sm-12">
                             <input type='hidden' name='id' id='id' value='' />
@@ -165,12 +170,14 @@ $('#HandleFormModal').on('show.bs.modal', function (event) {
 //点击取消按钮，重置表单
 $('#btnCancelHandleForm').bind('click', function() {
     //特殊DOM需要特殊处理
+    $('#tipDiv').hide();
     //利用bootstrapValidator来重置表单
     $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
 })
 //点击关闭按钮（弹出框右上角×来关闭），重置表单
 $('#btnCloseHandleForm').bind('click', function() {
     //特殊DOM需要特殊处理
+    $('#tipDiv').hide();
     //利用bootstrapValidator来重置表单
     $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
 })
@@ -202,43 +209,115 @@ $('#HandleForm').bootstrapValidator({
     e.preventDefault();
     var $form = $(e.target);    //获取表单实例
     var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
-    //对modal处理
-    $('#HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
-    $('#HandleFormModal').modal('hide');   //隐藏HandleFormModal
+    //对modal处理，禁用所有按钮
+    $('#HandleFormModal').find('button').attr('disabled', true);
     //显示提示信息
-    confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');
-    //对于bootstrap-select多选情况，需要再次特殊处理
-    //ajax处理，此处ajax为同步ajax
+    $('#tipDiv').html('<i class="fa fa-spinner fa-spin"></i>数据正在处理，请稍等...').show();
+    //ajax处理
     ajaxDo($form.attr('action'), $form.serialize(), "POST");
-    //根据ajax返回的值进行相应的处理
-    if(ajaxReturnData.status == '200') {    //操作成功
-        confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+    if(ajaxReturnData.status == '200') {
+        $('#tipDiv').html('<i class="fa fa-check"></i>' + ajaxReturnData.info).show();
         setTimeout(function() {
-            $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
             window.location.replace(CURRENTURL);
         }, 1000);
-    } else {    //操作失败
-        confirmModalInfo(ajaxReturnData.info, '');
-        setTimeout(function() {
-            confirmModalClose();
-            $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
-            $('#HandleFormModal').modal({
-                backdrop: 'static',
-                keyboard: false,
-                show: true
-            });   //显示HandleFormModal，保持原样
-        }, 1000);
+    } else {
+        $('#tipDiv').html('<i class="fa fa-exclamation-triangle"></i>' + ajaxReturnData.info).show();
+        $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
     }
-});;
+});
 ```
 
 ###添加弹出框（ajax）
 
 本例使用插件：[Sco.js 模态对话框](http://www.bootcss.com/p/sco.js/#modals)
 
-```
+```html
 <!--引入Sco.js-->
+<script src="common/lib/bootstrap/sco/js/sco.modal.js"></script>
+```
 
+```html
+<!--调用按钮，参考页面 base3-->
+<a class="btn btn-success" data-trigger="HandleFormModal" href="add.html" data-title="添加信息"><i class="fa fa-plus nomargin"></i>&nbsp;添加</a>
+<a class="btn btn-success" data-trigger="HandleFormModal" href="add.html" data-title="修改信息">修改</a>
+```
+
+```html
+<!--add.html-->
+<form class="form-horizontal" id="HandleForm" name="HandleForm" action="test.php" method="post">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">品种名称:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">产地:</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <div class="alert alert-danger nomargin text-center" id="tipDiv" style="display:none;" role="alert"></div>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <div class="col-sm-12">
+            <input type='hidden' name='id' id='id' value='' />
+            <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+            <button type="button" class="btn btn-default" data-dismiss="HandleFormModal" id="btnCancelHandleForm">取消</button>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function() {
+        //表单验证
+        $('#HandleForm').bootstrapValidator({
+            message: '您输入的信息有误，请仔细检查！',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                name: {
+                    validators: {
+                        notEmpty: {
+                            message: '名字不能为空'
+                        }
+                    }
+                },
+                address: {
+                    validators: {
+                        notEmpty: {
+                            message: '请填写产地'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
+            e.preventDefault();
+            var $form = $(e.target);    //获取表单实例
+            var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+            //对modal处理，禁用所有按钮
+            $('#HandleFormModal').find('button').attr('disabled', true);
+            //显示提示信息
+            $('#tipDiv').html('<i class="fa fa-spinner fa-spin"></i>数据正在处理，请稍等...').show();
+            //ajax处理
+            ajaxDo($form.attr('action'), $form.serialize(), "POST");
+            if(ajaxReturnData.status == '200') {
+                $('#tipDiv').html('<i class="fa fa-check"></i>' + ajaxReturnData.info).show();
+                setTimeout(function() {
+                    window.location.replace(CURRENTURL);
+                }, 1000);
+            } else {
+                $('#tipDiv').html('<i class="fa fa-exclamation-triangle"></i>' + ajaxReturnData.info).show();
+                $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+            }
+        });
+    });
+</script>
 ```
 
 ###左侧菜单
