@@ -19,9 +19,20 @@
 * [bootstrap-datetimepicker](http://www.bootcss.com/p/bootstrap-datetimepicker/ "bootstrap-datetimepicker")
 * [bootstrap-select](http://silviomoreto.github.io/bootstrap-select/ "bootstrap-select")
 * [BootstrapValidator](http://bv.doc.javake.cn/validators/ "BootstrapValidator")
+* [Sco.js](http://www.bootcss.com/p/sco.js/ "Sco.js")
 * [Font Awesome v4.6.3](http://fontawesome.io/icons/ "Font Awesome v4.6.3")
 
 ##框架组件
+
+###当前页面地址
+
+每个页面开处定义一下当前页面的地址，
+用于ajax处理(添加修改删除)成功后刷新当前页面，默认为`window.location.href`，
+如需保持当前页面的条件（如搜索条件、来自一级页面的条件），需要修改这个地址，加上相应的条件
+
+```JavaScript
+    var CURRENTURL = window.location.href;
+```
 
 ###提示弹出框
 
@@ -76,6 +87,158 @@ JS代码直接调用
 	//关闭提示框
 	confirmModalClose();
 </script>
+```
+
+###添加弹出框（非ajax）
+
+使用方法（个人建议）：如果当前页面已经把相应的信息全部查询出来，可将所有信息转为json赋值给js的变量 dataList，
+添加的时候清空表单，相应 `_method_` 赋值为 `add`
+修改的时候，根据数组健值`key`，获取 `dataList[key]`，通过js给表单元素赋值
+
+```html
+<!--添加按钮-->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus nomargin"></i>&nbsp;添加</button>
+<!--修改按钮 data-action 区分添加修改 data-obj 推荐使用循环时的健值 -->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#HandleFormModal" data-action="edit" data-obj="" data-backdrop="static" data-keyboard="false">修改</button>
+<!--弹出框代码-->
+<!-- FromModal begin -->
+<div class="modal fade" id="HandleFormModal" tabindex="-1" role="dialog" aria-labelledby="HandleFormModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseHandleForm">
+                    <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+                </button>
+                <h4 class="modal-title" id="HandleFormModalLabel">弹出框</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="HandleForm" name="HandleForm" action="" method="post">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">品种名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">产地:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="col-sm-12">
+                            <input type='hidden' name='id' id='id' value='' />
+                            <input type='hidden' name='_method_' id='_method_' value='add' />
+                            <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FromModal end -->
+```
+
+```javascript
+//根据添加/修改按钮点击，处理弹出框不同信息
+$('#HandleFormModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var action = button.data('action');
+    var modal = $(this);
+    if(action == 'add') {
+        modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
+        $('#_method_').val(action);
+    } else if(action == 'edit') {
+        modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
+        //此处将当前页面的所有信息对应的数组赋值给js变量
+        var dataList = json格式的数组
+        //获取修改按钮带的参数
+        var obj = button.data('obj');
+        //通过js赋值
+        $('#name').val(dataList[obj].name);
+        $('#address').val(dataList[obj].address);
+        $('#_method_').val(action);
+    }
+})
+//点击取消按钮，重置表单
+$('#btnCancelHandleForm').bind('click', function() {
+    //特殊DOM需要特殊处理
+    //利用bootstrapValidator来重置表单
+    $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+})
+//点击关闭按钮（弹出框右上角×来关闭），重置表单
+$('#btnCloseHandleForm').bind('click', function() {
+    //特殊DOM需要特殊处理
+    //利用bootstrapValidator来重置表单
+    $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+})
+//表单验证
+$('#HandleForm').bootstrapValidator({
+    message: '您输入的信息有误，请仔细检查！',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        'name': {
+            validators: {
+                notEmpty: {
+                    message: '请填写名称'
+                }
+            }
+        },
+        'address': {
+            validators: {
+                notEmpty: {
+                    message: '请填写产地'
+                }
+            }
+        }
+    }
+}).on('success.form.bv', function(e) {
+    e.preventDefault();
+    var $form = $(e.target);    //获取表单实例
+    var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+    //对modal处理
+    $('#HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
+    $('#HandleFormModal').modal('hide');   //隐藏HandleFormModal
+    //显示提示信息
+    confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');
+    //对于bootstrap-select多选情况，需要再次特殊处理
+    //ajax处理，此处ajax为同步ajax
+    ajaxDo($form.attr('action'), $form.serialize(), "POST");
+    //根据ajax返回的值进行相应的处理
+    if(ajaxReturnData.status == '200') {    //操作成功
+        confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+        setTimeout(function() {
+            $('#HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            window.location.replace(CURRENTURL);
+        }, 1000);
+    } else {    //操作失败
+        confirmModalInfo(ajaxReturnData.info, '');
+        setTimeout(function() {
+            confirmModalClose();
+            $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+            $('#HandleFormModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });   //显示HandleFormModal，保持原样
+        }, 1000);
+    }
+});;
+```
+
+###添加弹出框（ajax）
+
+本例使用插件：[Sco.js 模态对话框](http://www.bootcss.com/p/sco.js/#modals)
+
+```
+<!--引入Sco.js-->
+
 ```
 
 ###左侧菜单

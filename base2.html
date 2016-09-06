@@ -27,8 +27,7 @@
     <![endif]-->
     <!-- ------------------ end Header ---------------------->
     <script>
-        //重置当前页面---可选
-        CURRENTURL = window.location.href;
+        var CURRENTURL = window.location.href;
     </script>
 </head>
 <body ondrag="return false" ondragstart="return false;">
@@ -62,7 +61,7 @@
                 <h4 class="modal-title" id="HandleFormModalLabel">弹出框</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="HandleForm" name="HandleForm" action="" method="post">
+                <form class="form-horizontal" id="HandleForm" name="HandleForm" action="test.php" method="post">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">品种名称:</label>
                         <div class="col-sm-10">
@@ -73,6 +72,11 @@
                         <label class="col-sm-2 control-label">产地:</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger nomargin text-center" id="tipDiv" style="display:none;" role="alert"></div>
                         </div>
                     </div>
                     <div class="form-group text-center">
@@ -120,7 +124,8 @@
             <dl class="menu_list">
                 <dt class="menu_title"><i class="fa fa-list"></i>功能列表</dt>
                 <dd class="menu_item"><a href="base.html">基础实例</a></dd>
-                <dd class="menu_item selected"><a href="base2.html">基础实例2</a></dd>
+                <dd class="menu_item selected"><a href="base2.html">基础实例2：无搜索</a></dd>
+                <dd class="menu_item"><a href="base3.html">基础实例3：ajax添加修改</a></dd>
                 <dd class="menu_item"><a href="form.html">表单控件</a></dd>
                 <dd class="menu_item"><a href="document.html">使用文档</a></dd>
             </dl>
@@ -320,28 +325,20 @@
             var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
             //对modal处理
             $('#HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
-            $('#HandleFormModal').modal('hide');   //隐藏HandleFormModal
-            confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+            //显示提示信息
+            $('#tipDiv').html('<i class="fa fa-spinner fa-spin"></i>数据正在处理，请稍等...').show();
             //ajax处理
             ajaxDo($form.attr('action'), $form.serialize(), "POST");
             if(ajaxReturnData.status == '200') {
-                confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                $('#tipDiv').html('<i class="fa fa-check"></i>' + ajaxReturnData.info).show();
                 setTimeout(function() {
-                    window.location.replace(window.location.href);
+                    window.location.replace(CURRENTURL);
                 }, 1000);
             } else {
-                confirmModalInfo(ajaxReturnData.info, '');
-                setTimeout(function() {
-                    confirmModalClose();
-                    $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
-                    $('#HandleFormModal').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: true
-                    });   //显示HandleFormModal，保持原样
-                }, 1000);
+                $('#tipDiv').html('<i class="fa fa-exclamation-triangle"></i>' + ajaxReturnData.info).show();
+                $('#HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
             }
-        });;
+        });
     });
 </script>
 </body>

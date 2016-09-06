@@ -3,8 +3,6 @@
  */
 //保留ajax返回值
 var ajaxReturnData = '';
-//当前页面
-var CURRENTURL = window.location.href;
 $(function() {
     //初始化当前页面地址
     //左右两侧高度一致

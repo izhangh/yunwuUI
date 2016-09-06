@@ -27,8 +27,7 @@
     <![endif]-->
     <!-- ------------------ end Header ---------------------->
     <script>
-        //重置当前页面链接---可选
-        CURRENTURL = window.location.href;
+        var CURRENTURL = window.location.href;
     </script>
 </head>
 <body ondrag="return false" ondragstart="return false;">
@@ -120,7 +119,8 @@
             <dl class="menu_list">
                 <dt class="menu_title"><i class="fa fa-list"></i>功能列表</dt>
                 <dd class="menu_item"><a href="base.html">基础实例</a></dd>
-                <dd class="menu_item"><a href="base2.html">基础实例2</a></dd>
+                <dd class="menu_item"><a href="base2.html">基础实例2：无搜索</a></dd>
+                <dd class="menu_item"><a href="base3.html">基础实例3：ajax添加修改</a></dd>
                 <dd class="menu_item"><a href="form.html">表单控件</a></dd>
                 <dd class="menu_item"><a href="document.html">使用文档</a></dd>
             </dl>
@@ -318,7 +318,6 @@
             $('#_method_').val(action);
         }
     })
-
     $(document).ready(function() {
         $('#btnCancelHandleForm').bind('click', function() {
             $('#group_client_id_value').val();
@@ -364,7 +363,7 @@
             if(ajaxReturnData.status == '200') {
                 confirmModalInfo(ajaxReturnData.info, ' fa-check ');
                 setTimeout(function() {
-                    window.location.replace(window.location.href);
+                    window.location.replace(CURRENTURL);
                 }, 1000);
             } else {
                 confirmModalInfo(ajaxReturnData.info, '');
@@ -378,7 +377,7 @@
                     });   //显示HandleFormModal，保持原样
                 }, 1000);
             }
-        });;
+        });
     });
 </script>
 </body>
