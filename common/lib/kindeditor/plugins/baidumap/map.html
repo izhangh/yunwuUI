@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Baidu Maps</title>
+		<style>
+			html { height: 100% }
+			body { height: 100%; margin: 0; padding: 0; background-color: #FFF }
+		</style>
+		<script charset="utf-8" src="http://api.map.baidu.com/api?v=1.3"></script>
+		<script>
+            var map, geocoder;
+            function initialize() {
+                map = new BMap.Map('map_canvas');
+                //浏览者当前城市获取开始
+                var myCity = new BMap.LocalCity();
+                myCity.get(function(result){
+                    map.centerAndZoom(result.name,15);
+                });
+                //浏览者当前城市获取结束
+                map.addControl(new BMap.NavigationControl());
+                map.enableScrollWheelZoom();
+                //标注地图开始部分
+                map.addEventListener("click",function(e){
+                    var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));  // 创建标注
+                    marker.enableDragging();
+                    marker.setTitle('我在这里！');
+                    var infoWindow = new BMap.InfoWindow("我在这里！");
+                    marker.addEventListener("mouseover", function(){this.openInfoWindow(infoWindow);});
+                    marker.addEventListener("mouseout", function(){this.closeInfoWindow();});
+                    map.clearOverlays();
+                    map.addOverlay(marker);
+                    getPosition();
+                    marker.addEventListener("dragend", function(){getPosition();});
+                    function getPosition(){
+                        var position = marker.getPosition();
+                        document.getElementById("position").value=position.lng+','+position.lat
+                    }
+                });
+                //标注地图结束部分
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    var addComp = rs.addressComponents;
+                    var address = [addComp.city].join('');
+                    parent.document.getElementById("kindeditor_plugin_map_address").value = address;
+                });
+            }
+            function search(address) {
+                if (!map) return;
+                var local = new BMap.LocalSearch(map, {
+                    onSearchComplete: function (results){
+                        if (results && results.getNumPois()) {
+                            var points = [];
+                            for (var i=0; i<results.getCurrentNumPois(); i++) {
+                                points.push(results.getPoi(i).point);
+                            }
+                            if (points.length > 1) {
+                                map.setViewport(points);
+                            } else {
+                                map.centerAndZoom(points[0], 13);
+                            }
+                            point = map.getCenter();
+                            marker.setPosition(point);
+                        } else {
+                            alert('无法定位到该地址！');
+                        }
+                    }
+                });
+                local.search(address);
+            }
+		</script>
+	</head>
+	<body onload="initialize();">
+		<div id="map_canvas" style="width:100%; height:100%"></div>
+	</body>
+</html>

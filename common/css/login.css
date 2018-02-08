@@ -1,0 +1,201 @@
+* {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+    color: #555;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow: hidden;
+    width: 100%;
+}
+
+input:focus {
+    outline: none;
+}
+
+input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset !important;
+}
+
+canvas {
+    display: block;
+    vertical-align: bottom;
+}
+
+#box {
+    background: #b8e5f8 url(../images/loginBg.png) no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.main {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+.cent-box {
+    background: #fff;
+    overflow: visible;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, .1);
+    box-sizing: border-box;
+    width: 432px;
+    margin: 80px auto 30px;
+    text-align: center;
+    position: relative;
+}
+
+.cent-box-header {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.cent-box-header .main-title {
+    width: 280px;
+    height: 85px;
+    margin: 0 auto;
+    background-size: contain;
+}
+
+.cent-box-header .sub-title {
+    margin: 30px 0 30px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1;
+    color: #214997;
+    font-size: 22px;
+}
+
+.form {
+    float: none;
+    margin: auto;
+    text-align: left;
+    padding: 0 40px 36px;
+}
+
+.form .group .group-ipt {
+    margin-top: 16px;
+    border-bottom: 1px solid #ebebeb;
+    border-radius: 0;
+}
+
+.form .group .group-ipt input {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    line-height: 24px;
+    height: 48px;
+    -webkit-box-shadow: 0 0 0 30px #fff inset;
+    letter-spacing: 1px;
+    font-size: 18px;
+}
+
+.password {
+    position: relative;
+    font-size: 24px;
+}
+
+.passwordChange {
+    display: inline-block;
+    padding: 0 16px;
+    font-size: 20px;
+    line-height: 32px;
+    color: #8590a6;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    top: 24px;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: auto;
+    padding: 0;
+    line-height: inherit;
+    background-color: transparent;
+}
+
+.button {
+    padding-top: 4px !important;
+}
+
+#button {
+    margin-top: 10px;
+    width: 100%;
+    background: #0c4280;
+    box-shadow: none;
+    border: 0;
+    border-radius: 3px;
+    line-height: 41px;
+    color: #fff;
+    display: block;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'Microsoft Yahei';
+}
+
+#button:hover {
+    background: #214997;
+}
+
+.tip-info {
+    text-align: center;
+    color: red;
+    display: none;
+}
+
+.footer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #f6f6f6;
+    height: 58px;
+    border-top: 1px solid #ebebeb;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+@media (max-width: 767px) {
+    .main {
+        padding: 0;
+    }
+    .cent-box {
+        margin: 80px auto 30px;
+        width: 90%;
+    }
+}

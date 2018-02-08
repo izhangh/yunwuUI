@@ -1,0 +1,43 @@
+<form class="form-horizontal" id="HandleForm" name="HandleForm" data-toggle="validateForm" data-field="fieldValid" action="./PHP/test.php" method="post">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i
+                class="fa fa-times-circle"></i></span></button>
+        <h4 class="modal-title">添加</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">品种名称:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">产地:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="address" name="address" data-bv-field="address" value="" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-success">提交</button>
+    </div>
+</form>
+<script>
+    var fieldValid = {
+        name: {
+            validators: {
+                notEmpty: {
+                    message: '名字不能为空'
+                }
+            }
+        },
+        address: {
+            validators: {
+                notEmpty: {
+                    message: '请填写产地'
+                }
+            }
+        }
+    };
+</script>
